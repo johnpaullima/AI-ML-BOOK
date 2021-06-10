@@ -1,5 +1,5 @@
-#carrega as bibliotecas necess·rias
-library(ggplot2) #biblioteca para plotar gr·ficos mais bonitos
+#carrega as bibliotecas necess√°rias
+library(ggplot2) #biblioteca para plotar gr√°ficos mais bonitos
 
 #leia os dados do arquivo wine.csv
 dados <- read.csv("wine.csv",header = TRUE, sep=",")
@@ -8,7 +8,7 @@ plot(dados)
 
 ###########################
 #Separa os dados em dois conjuntos, treinamento e teste
-Percenttreino=70
+Percenttreino <- 70
 sample_size <- floor((Percenttreino/100) * nrow(dados)) #numero de amostras de treinamento
 set.seed(2)                    #semente para randomizar
 train_index <- sample(seq_len(nrow(dados)), size = sample_size) #gera indices
@@ -21,19 +21,19 @@ plot(treino, col='blue') #plota dados de treinamento - azul
 #teste <-dados
 #treino <- dados
 
-#cria o modelo de regress„o linear
+#cria o modelo de regress√£o linear
 linearMod <- lm(Price ~ AGST + Age + WinterRain + HarvestRain, data=treino) 
 
 #apresenta os coeficientes linear e angular
 linearMod
 
-#apresenta as mÈtricas do modelo (residuo, distribuiÁ„o, etc)
+#apresenta as m√©tricas do modelo (residuo, distribui√ß√£o, etc)
 print(summary(linearMod))
 
 #remove a coluna price do dataset test
 X1 = subset(teste, select = -c(Price))
 
-#Aplica a vari·vel X1 no modelo e preveja o resultado
+#Aplica a vari√°vel X1 no modelo e preveja o resultado
 Ytest <- predict(linearMod, X1)
 print('valor Previsto')
 print(Ytest)
@@ -47,7 +47,7 @@ barplot(saidas, xlab="dado - Previsto/Esperado",ylim=c(0,10),
 diferencas <- teste$Price-Ytest
 print('diferenca real - previsto')
 print(diferencas)
-#plota as diferenÁas entre o previsto e o esperado
+#plota as diferen√ßas entre o previsto e o esperado
 barplot(diferencas)
 
 #calcula o RMSE
@@ -55,6 +55,6 @@ RMSE <- sqrt(sum(diferencas^2)/length(diferencas))
 print('RMSE')
 print(RMSE)
 
-#plota o gr·fico Y vs X, com intervalo de confianÁa.
+#plota o gr√°fico Y vs X, com intervalo de confian√ßa.
 ggplot(dados, aes(x=AGST, y=Price)) + geom_point(shape=18, color="blue") + geom_smooth(method=lm,  linetype="dashed",
                                                                                        color="darkred", fill="pink") + geom_point()
