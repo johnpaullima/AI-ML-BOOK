@@ -48,9 +48,11 @@ y_test <- to_categorical(y_test, num_classes)
 
 # Especifica o modelo de rede neural
 model <- keras_model_sequential() %>%
-  layer_conv_2d(filters = 32, kernel_size = c(3,3), activation = 'relu',
+  layer_conv_2d(filters = 4, kernel_size = c(3,3), activation = 'relu',
+  #layer_conv_2d(filters = 32, kernel_size = c(3,3), activation = 'relu',
                 input_shape = input_shape) %>% 
-  layer_conv_2d(filters = 64, kernel_size = c(3,3), activation = 'relu') %>% 
+  layer_conv_2d(filters = 8, kernel_size = c(3,3), activation = 'relu') %>% 
+  #layer_conv_2d(filters = 64, kernel_size = c(3,3), activation = 'relu') %>% 
   layer_max_pooling_2d(pool_size = c(2, 2)) %>% 
   layer_dropout(rate = 0.25) %>% 
   layer_flatten() %>% 
@@ -70,11 +72,8 @@ model %>% compile(
 summary(model)
 
 # Treina o modelo
-model %>% fit(
-  x_train, y_train,
-  batch_size <- batch_size,
-  epocas <- epocas,
-  validation_split = 0.2
+model %>% fit( x_train, y_train, batch_size <- batch_size,
+  epocas <- epocas, validation_split = 0.2
 )
 
 # Avalia o modelo
@@ -83,6 +82,17 @@ scores <- model %>% evaluate(x_test, y_test, verbose = 0)
 # Métricas de saída
 cat('Test loss:', scores[[1]], '\n')
 cat('Test accuracy:', scores[[2]], '\n')
+
+# Aplica o modelo no conjunto de teste
+previsao <- predict(model,x_test)
+#mostra o resultado do modelo, com as 10 classes e a prob.
+previsao[1,]
+
+#encontra qual é a saída prevista e real (coluna com maior prob)
+predicted_labels <- max.col((previsao)) - 1
+real_labels <-max.col((y_test)) - 1
+#mostra a matriz de confusão
+print(table(predicted_labels, real_labels))
 
 # o código abaixo serve para exibir um número do dataset como imagem
 x_train<- data.frame(x_train)
@@ -95,4 +105,3 @@ for (i in 1:27)
 
 matrizIMG <- t(matrizIMG)
 image(matrizIMG)
-
