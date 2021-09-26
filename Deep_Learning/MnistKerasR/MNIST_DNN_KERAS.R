@@ -1,11 +1,21 @@
+## instale o keras
+# install.packages("keras")
+## se n√£o tiver python instalado no computador, ele vai sugerir instalar o Miniconda. Instale
+## reinicie o PC
+## carregue a library keras
+# library(keras)
+## execute o comando no install_keras()
+# install_keras()
+## quando terminar, rode o c√≥digo a seguir. Ele deve executar, sem problemas.
+
 library(keras)
 
-# PreparaÁ„o dos dados - hiperpar‚metros -----------------------------------------------------
+# Prepara√ß√£o dos dados - hiperpar√¢metros -----------------------------------------------------
 batch_size <- 128
-num_classes <- 10 #saÌdas
+num_classes <- 10 #sa√≠das
 epocas <- 5
 
-# Dimensıes das imagens de entrada
+# Dimens√µes das imagens de entrada
 img_rows <- 28
 img_cols <- 28
 
@@ -16,7 +26,7 @@ y_train <- mnist$train$y
 x_test <- mnist$test$x
 y_test <- mnist$test$y
 
-# Redefinindo as colunas/dimensıes das entradas
+# Redefinindo as colunas/dimens√µes das entradas
 x_train <- array_reshape(x_train, c(nrow(x_train), img_rows, img_cols, 1))
 x_test <- array_reshape(x_test, c(nrow(x_test), img_rows, img_cols, 1))
 input_shape <- c(img_rows, img_cols, 1)
@@ -25,12 +35,12 @@ input_shape <- c(img_rows, img_cols, 1)
 x_train <- x_train / 255
 x_test <- x_test / 255
 
-#plota no console o n˙mero de amostras de treinamento e teste
+#plota no console o n√∫mero de amostras de treinamento e teste
 cat('x_train_shape:', dim(x_train), '\n')
 cat(nrow(x_train), 'train samples\n')
 cat(nrow(x_test), 'test samples\n')
 
-# Converte vetores de classe em matrizes de classes bin·rias
+# Converte vetores de classe em matrizes de classes bin√°rias
 y_train <- to_categorical(y_train, num_classes)
 y_test <- to_categorical(y_test, num_classes)
 
@@ -56,7 +66,9 @@ model %>% compile(
   metrics = c('accuracy')
 )
 
+# Mostra no console os par√¢metros e camadas do modelo=
 summary(model)
+
 # Treina o modelo
 model %>% fit(
   x_train, y_train,
@@ -68,11 +80,11 @@ model %>% fit(
 # Avalia o modelo
 scores <- model %>% evaluate(x_test, y_test, verbose = 0)
 
-# MÈtricas de saÌda
+# M√©tricas de sa√≠da
 cat('Test loss:', scores[[1]], '\n')
 cat('Test accuracy:', scores[[2]], '\n')
 
-# o cÛdigo abaixo serve para exibir um n˙mero do dataset como imagem
+# o c√≥digo abaixo serve para exibir um n√∫mero do dataset como imagem
 x_train<- data.frame(x_train)
 indicenumero <- 6
 numero <- t(x_train[indicenumero,])
